@@ -16,7 +16,7 @@ class newsDataAll(Resource):
         try:
             query = {}
             projection = {'_id':False}
-            newsAllData = mongo.db.historyday.find(query, projection)
+            newsAllData = mongo.db.news.find(query, projection)
             listData = []
             for element in newsAllData:
                 listData.append(element)

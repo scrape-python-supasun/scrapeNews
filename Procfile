@@ -1,1 +1,1 @@
-web: gunicorn addapihistoryday:app
+web: gunicorn apiNewsData:app
