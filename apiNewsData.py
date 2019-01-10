@@ -10,7 +10,7 @@ app.config['MONGO_URI'] = 'mongodb://heroku_2t8dvcnx:4uamfel6g9rdp2pfuevg0r3t8s@
 
 mongo = PyMongo(app)
 api = Api(app)
-
+parser = reqparse.RequestParser()
 class newsDataAll(Resource):
     def get(self):
         try:
