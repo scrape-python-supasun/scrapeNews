@@ -10,10 +10,17 @@ client = MongoClient(uri)
 db = client["heroku_2t8dvcnx"]
 collections = db['news']
 
-r = urllib.request.urlopen('https://www.ryt9.com/technology-latest/2019-01-08').read()
+time = input('what is time(Year-Month-Day): ')
+print('the time is: ',time)
+category = input('what is category: ')
+print('the category is: ',category)
+
+
+website = 'https://www.ryt9.com/{}-latest/{}'.format(category,time)
+r = urllib.request.urlopen(website).read()
 soup = BeautifulSoup(r ,'html.parser')
 
-# technology__news = soup.find(id="main-category")
+# หัวข้อ
 def headData():
     listHeadData = []
     
@@ -25,7 +32,7 @@ def headData():
 
 # listDataHead = headData()
 # print(listDataHead)
-
+# รายละเอยีด
 def detailData():
     listDetailData = []
     technologyNewsDetail = soup.find_all("p")
@@ -36,10 +43,7 @@ def detailData():
         listDetailData.append(detailFullData)
     return listDetailData
 
-# listDetailData = detailData()
-# print(listDetailData)
-# imageAll = image_tag.get('src')
-
+# ลิ้งรูป
 def photoLink():
     listLinkPhoto = []
     technologyLinkPhoto = soup.find_all("img")
@@ -52,7 +56,7 @@ def photoLink():
 # allphotoLink = photoLink()
 # print(allphotoLink)
 
-
+# ซื่อของรูป
 def photoDataNameAlt():
     listPhotoName = []
     technologyNewsPhoto = soup.find_all("img")
@@ -61,7 +65,7 @@ def photoDataNameAlt():
         listPhotoName.append(photoNewsName)
     return listPhotoName
 
-
+# ซื่อหัวข้อรวมnone
 def nameHeader():
     headDataDetail = headData()
     photoAlt = photoDataNameAlt()
@@ -71,8 +75,12 @@ def nameHeader():
             photoAlt.append(element)
             allNamePhotoLink.append('none')
     return photoAlt
+# b = nameHeader()
+# print(b)
+# print('\n')
 
 
+# ซื่อlinkรวมnone
 def linknamePhoto():
     headDataDetail = headData()
     photoAlt = photoDataNameAlt()
@@ -80,8 +88,29 @@ def linknamePhoto():
     for element in headDataDetail:
         if element not in photoAlt:
             photoAlt.append(element)
-            allNamePhotoLink.append('none')
+            allNamePhotoLink.append('nonePhoto')
     return allNamePhotoLink
+# a = linknamePhoto()
+# print(a)
+# print('\n')
+# รายละเอียดรวมnone
+def detailNameAll():
+    headDataDetail = headData()
+    photoAlt = photoDataNameAlt()
+    allNamePhotoLink = photoLink()
+    detailNews = detailData()
+    # listData=[]
+    for element in headDataDetail:
+        if element not in photoAlt:
+            # print(element)
+            allList = headDataDetail
+            ListPosition = allList.index((element))
+            del detailNews[ListPosition]
+            detailNews.append('noneDetail')
+    return detailNews
+# c = detailNameAll()
+# print(c)
+
 
 
 def idNumber():
@@ -95,18 +124,21 @@ def idNumber():
 
 def allDataNews():
     numberId = idNumber()
-  
-    listDetailData = detailData()
+
     nameAllHeader = nameHeader()
     AllLinkPhoto = linknamePhoto()
+    listdetailAll = detailNameAll()
     myDictData = {}
     listAllData = []
     for element in range(0,15):
-        myDictData = {"id":numberId[element],"Header":nameAllHeader[element],"Detail":listDetailData[element],"photolink":AllLinkPhoto[element]}
+        # myDictData = {"id":numberId[element],"Header":nameAllHeader[element],"Detail":listdetailAll[element],"photolink":AllLinkPhoto[element],"time":time,"category":category}
+        myDictData = {"id":numberId[element],"Header":nameAllHeader[element],"Detail":listdetailAll[element],"photolink":AllLinkPhoto[element],"time":time,"category":category}
+
         listAllData.append(myDictData)
+        # print('\n')
     return listAllData
-allNewsData = allDataNews()
-print(allNewsData)
+# allNewsData = allDataNews()
+# print(allNewsData)
 
 
 def databaseProfile():
@@ -115,4 +147,4 @@ def databaseProfile():
     result.inserted_ids
     return result
 # ทำให้เข้าถานข้อมูล
-# databaseProfileData = databaseProfile()
+databaseProfileData = databaseProfile()
