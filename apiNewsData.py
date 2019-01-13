@@ -27,11 +27,13 @@ class categoryData(Resource):
         # query พร้อมกัน
         # query = {'category': categoryData,'time':dateData}
         # query เเบบเดียว
-        if categoryData:
+        if categoryData and dateData:
+            query = {'category': categoryData,'time':dateData}
+        elif categoryData:
             query = {'category': categoryData}
         elif dateData:
             query = {'time': dateData}
-        # query = {'category': categoryData,'time':dateData}
+       
         projection = {'_id':False}
 
         categoryDataAll = mongo.db.news.find(query, projection)
