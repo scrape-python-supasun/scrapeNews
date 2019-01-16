@@ -10,32 +10,23 @@ client = MongoClient(uri)
 db = client["heroku_2t8dvcnx"]
 collections = db['news']
 
-from datetime import datetime,tzinfo,timedelta
+# time = input('what is time(Year-Month-Day): ')
+# print('the time is: ',time)
+# category = input('what is category: ')
+# print('the category is: ',category)
+# website = 'https://www.ryt9.com/{}-latest/{}'.format(category,time)
+# r = urllib.request.urlopen(website).read()
+# soup = BeautifulSoup(r ,'html.parser')
 
-class Zone(tzinfo):
-    def __init__(self,offset,isdst,name):
-        self.offset = offset
-        self.isdst = isdst
-        self.name = name
-    def utcoffset(self, dt):
-        return timedelta(hours=self.offset) + self.dst(dt)
-    def dst(self, dt):
-            return timedelta(hours=1) if self.isdst else timedelta(0)
-    def tzname(self,dt):
-         return self.name
-
-datetimeUtc = datetime.utcnow().strftime('%Y-%m-%d')
-print("the time is: ",datetimeUtc)
-
-
-
+time = input('what is time(Year-Month-Day): ')
+print('the time is: ',time)
 # list ของเว็บ
 category=['world','economy','stock','politics','entertain','sports','travel','technology','real_estate','motor','general']
 for topic in category:
     print(topic)
 # รวมหน้าเว็บที่เราจะsoupมาsoup
     def scrape(topic):
-        website = 'https://www.ryt9.com/{}-latest/{}'.format(topic,datetimeUtc)
+        website = 'https://www.ryt9.com/{}-latest/{}'.format(topic,time)
         r = urllib.request.urlopen(website).read()
         soup = BeautifulSoup(r ,'html.parser')
         return soup
@@ -249,7 +240,7 @@ for topic in category:
         listAllData = []
         lenghtData = len(allSolutionDescription)
         for element in range(0,lenghtData):
-            myDictData = {"Header":nameAllHeader[element],"Detail":allSolutionDescription[element],"photolink":AllLinkPhoto[element],"time":datetimeUtc,"category":topic}
+            myDictData = {"Header":nameAllHeader[element],"Detail":allSolutionDescription[element],"photolink":AllLinkPhoto[element],"time":time,"category":topic}
             listAllData.append(myDictData)
         return listAllData
     AllProfile = allDataNews()
