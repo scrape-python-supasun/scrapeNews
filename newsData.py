@@ -27,6 +27,9 @@ class Zone(tzinfo):
 datetimeUtc = datetime.utcnow().strftime('%Y-%m-%d')
 print("the time is: ",datetimeUtc)
 
+# 
+# 
+# 
 
 
 # list ของเว็บ
